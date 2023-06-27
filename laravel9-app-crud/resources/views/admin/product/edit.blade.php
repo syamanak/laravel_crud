@@ -20,7 +20,7 @@
 
     {{-- 編集画面 --}}
     <div class="card">
-        <form action="{{ route('product.update', $product->id) }}" method="post">
+        <form action="{{ route('product.update', $product->id) }}" method="post" enctype="multipart/form-data">
             @csrf @method('PUT')
             <div class="card-body">
                 {{-- 商品名入力 --}}
@@ -34,6 +34,14 @@
                     <label for="price">価格</label>
                     <input type="text" class="form-control" id="price" name="price"
                         value="{{ old('price', $product->price) }}" placeholder="価格" />
+                </div>
+                {{-- 画像入力 --}}
+                <div class="form-group">
+                    <label for="image">画像</label>
+                    <input type="file" name="image" id="image" value="{{ old('image') }}" placeholder="画像">
+                </div>
+                <div style="width: 140px">
+                    <img src="{{ asset($product->path) }}" width="100%">
                 </div>
             </div>
             <div class="card-footer">

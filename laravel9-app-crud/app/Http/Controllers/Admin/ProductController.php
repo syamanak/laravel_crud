@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,7 @@ class ProductsController extends Controller
         $products = Product::paginate(5);
 
         return view(
-            'product.index',
+            'admin.product.index',
             ['products' => $products]
         );
     }
@@ -28,7 +29,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('admin.product.create');
     }
 
     /**
@@ -37,10 +38,19 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
 
+        // ディレクトリ名
+        $dir = 'product';
         $product = new Product;
+        // アップロードされたファイル名を取得
+        $file_name = $request->file('image')->getClientOriginalName();
 
+        // 取得したファイル名で保存
+        $request->file('image')->storeAs('public/' . $dir, $file_name);
         // fillを使用する場合は、必ずモデルのfillableを指定する
-        $product->fill($request->all())->save();
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->path = 'storage/' . $dir . '/' . $file_name;
+        $product->save();
 
         // 一覧へ戻り完了メッセージを表示
         return redirect()->route('product.index')->with('message', '登録しました');
@@ -61,7 +71,7 @@ class ProductsController extends Controller
     {
         $product = Product::find($id);
 
-        return view('product.edit', [
+        return view('admin.product.edit', [
             'product' => $product
         ]);
     }
@@ -72,7 +82,19 @@ class ProductsController extends Controller
     public function update(ProductRequest $request, $id)
     {
         $product = Product::find($id);
-        $product->fill($request->all())->save();
+
+        // ディレクトリ名
+        $dir = 'product';
+        // アップロードされたファイル名を取得
+        $file_name = $request->file('image')->getClientOriginalName();
+
+        // 取得したファイル名で保存
+        $request->file('image')->storeAs('public/' . $dir, $file_name);
+        // fillを使用する場合は、必ずモデルのfillableを指定する
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->path = 'storage/' . $dir . '/' . $file_name;
+        $product->save();
 
         // 一覧へ戻り完了メッセージを表示
         return redirect()->route('product.index')->with('message', '編集しました');

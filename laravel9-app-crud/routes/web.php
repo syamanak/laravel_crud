@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Web\WebProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // 商品マスタ
-Route::resource('product', ProductsController::class, ['except' => ['show']]);
+Route::prefix('admin')->group(function () {
+    Route::resource('/product', ProductController::class, ['except' => ['show']]);
+});
+
+Route::get('/product', [WebProductController::class, 'index']);
