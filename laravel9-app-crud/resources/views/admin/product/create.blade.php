@@ -20,7 +20,7 @@
 
     {{-- 登録画面 --}}
     <div class="card">
-        <form action="{{ route('product.store') }}" method="post">
+        <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 {{-- 商品名入力 --}}
@@ -34,6 +34,10 @@
                     <label for="price">価格</label>
                     <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}"
                         placeholder="価格" />
+                </div>
+                <div class="form-group">
+                    <label for="image">画像</label>
+                    <input type="file" name="image" id="image" value="{{ old('image') }}" placeholder="画像">
                 </div>
             </div>
             <div class="card-footer">

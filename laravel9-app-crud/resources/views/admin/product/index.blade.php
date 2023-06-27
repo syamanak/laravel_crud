@@ -27,6 +27,7 @@
                     <tr>
                         <th>商品名</th>
                         <th>価格</th>
+                        <th style="width: 140px">画像</th>
                         <th style="width: 70px"></th>
                     </tr>
                 </thead>
@@ -36,6 +37,7 @@
                             <td>{{ $product->name }}</td>
                             {{-- 数字フォーマット --}}
                             <td>{{ number_format($product->price) }}</td>
+                            <td><img style="width: 100%" src="{{ asset($product->path) }}"></td>
                             <td>
                                 <a class="btn btn-primary btn-sm mb-2" href="{{ route('product.edit', $product->id) }}"
                                     role="button">編集</a>
